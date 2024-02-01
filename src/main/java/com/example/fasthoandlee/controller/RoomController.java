@@ -14,28 +14,31 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    @GetMapping
+    @GetMapping("/list")
     public String getAllRooms(Model model) {
         model.addAttribute("rooms", roomService.findAllRooms());
         return "rooms/list";
     }
 
     @GetMapping("/new")
-    public String showRoomForm(Model model) {
+    public String RoomForm(Model model) {
         model.addAttribute("room", new Room());
-        return "rooms/form";
+        return "rooms/createForm";
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public String createRoom(Room room) {
-        roomService.saveRoom(room);
-        return "redirect:/rooms";
+        try {
+            roomService.saveRoom(room);
+            return "redirect:/";
+        } catch (Exception e) {
+            return "redirect:/error";
+        }
     }
 
-    @GetMapping("/{id}")
-    public String getRoomById(@PathVariable Long id, Model model) {
-        Room room = roomService.findRoomById(id).orElse(null);
-        model.addAttribute("room", room);
-        return "rooms/detail";
+    @GetMapping("/delete/{id}")
+    public String deleteRoom(@PathVariable Long id) {
+        roomService.deleteRoom(id);
+        return "redirect:/rooms";
     }
 }

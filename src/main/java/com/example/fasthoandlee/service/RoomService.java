@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +22,6 @@ public class RoomService {
 
     public List<Room> findAllRooms() {
         return roomRepository.findAll();
-    }
-
-    public Optional<Room> findRoomById(Long id) {
-        return roomRepository.findById(id);
     }
 
     @Transactional

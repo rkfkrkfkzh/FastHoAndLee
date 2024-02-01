@@ -16,15 +16,11 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final RoomRepository roomRepository;
 
     public List<Reservation> findAllReservations() {
         return reservationRepository.findAll();
     }
 
-    public Optional<Reservation> findReservationById(Long id) {
-        return reservationRepository.findById(id);
-    }
     @Transactional
     public void saveReservation(Reservation reservation) {
         reservationRepository.save(reservation);

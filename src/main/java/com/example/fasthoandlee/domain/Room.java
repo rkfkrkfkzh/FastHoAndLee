@@ -19,4 +19,5 @@ public class Room {
     private String name;
     private String description;
     private Double price;
+    private String imageUrl = "/images/room.png"; // 기본 이미지 경로
 }

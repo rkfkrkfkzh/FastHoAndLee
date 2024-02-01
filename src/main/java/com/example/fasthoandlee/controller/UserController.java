@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String userId, @RequestParam String userPwd, Model model ,HttpSession session) {
+    public String login(@RequestParam String userId, @RequestParam String userPwd, Model model, HttpSession session) {
         Optional<User> user = userService.loginUser(userId, userPwd);
         if (user.isPresent()) {
             // 세션에 사용자 정보 저장
@@ -38,6 +38,7 @@ public class UserController {
             return "redirect:/users/login"; // 로그인 폼으로 다시 리다이렉트
         }
     }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
@@ -52,7 +53,12 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String createUser(User user) {
+    public String createUser(User user, Model model) {
+        if (userService.existsByUserId(user.getUserId())) {
+            model.addAttribute("user", user);
+            model.addAttribute("errorMessage", "이미 존재하는 ID입니다. 다른 ID를 사용해주세요."); // Error message for the user
+            return "users/createForm";
+        }
         try {
             userService.saveUser(user);
             return "users/loginForm";
