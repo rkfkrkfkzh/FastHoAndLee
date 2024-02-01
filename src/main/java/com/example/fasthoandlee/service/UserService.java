@@ -16,6 +16,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    // 회원 등록
+    @Transactional
+    public void saveUser(User user) {
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+            throw new IllegalStateException("이미 존재하는 아이디입니다.");
+        }
+        userRepository.save(user);
+    }
+
+    public Optional<User> loginUser(String userId, String userPwd) {
+        return userRepository.findByUserId(userId)
+                .filter(user -> user.getUserPwd().equals(userPwd));
+    }
+
+    public boolean existsByUserId(String userId) {
+        return userRepository.findByUserId(userId).isPresent();
+    }
+
     // 모든 회원 조회
     public List<User> findAllUsers() {
         return userRepository.findAll();
@@ -24,12 +42,6 @@ public class UserService {
     // id로 회원 조회
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
-    }
-
-    // 회원 등록
-    @Transactional
-    public void saveUser(User user) {
-        userRepository.save(user);
     }
 
     // 회원 삭제
