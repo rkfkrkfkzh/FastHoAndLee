@@ -1,0 +1,27 @@
+body {
+    padding-top: 20px;
+}
+.room-item {
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: box-shadow .3s;
+}
+.room-item:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,.15);
+}
+.room-image {
+    max-width: 100px; /* Adjust the size as necessary */
+    height: auto;
+    border-radius: 5px;
+}
+.add-room-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.add-room-btn:hover {
+    background-color: #157347; /* Darker green */
+}
