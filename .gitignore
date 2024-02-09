@@ -35,7 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-# Project exclude paths
-/src/main/resources/templates/reservations/
-/src/main/resources/templates/users/

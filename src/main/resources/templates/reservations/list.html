@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Reservation List</title>
+</head>
+<body>
+<h2>Reservations</h2>
+<div>
+  <a th:href="@{/reservations/new}">예약 추가</a>
+</div>
+<div>
+  <ul>
+    <li th:each="reservation : ${reservations}">
+      <span th:text="${reservation.user.name}">회원 이름</span> -
+      <span th:text="${reservation.room.name}">객실명</span> -
+      <span th:text="${reservation.checkIn}">체크인</span> -
+      <span th:text="${reservation.checkOut}">체크아웃</span>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
