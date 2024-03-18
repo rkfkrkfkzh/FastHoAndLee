@@ -14,6 +14,7 @@ import java.util.List;
 public class HomeController {
 
     private final RoomService roomService;
+
     @GetMapping("/")
     public String home(Model model) {
         List<Room> recentRooms = roomService.findAllRooms(); // 가정: 최근 객실을 조회하는 서비스 메서드
