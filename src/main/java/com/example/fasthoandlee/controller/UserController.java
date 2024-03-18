@@ -33,9 +33,9 @@ public class UserController {
             session.setAttribute("user", user.get());
             return "redirect:/"; // 로그인 성공 시 홈 페이지로 리다이렉트
         } else {
-            // login 실패
+            // 로그인 실패
             model.addAttribute("loginError", "ID 또는 Password가 잘못되었습니다");
-            return "redirect:/users/login"; // 로그인 폼으로 다시 리다이렉트
+            return "users/loginForm"; // 로그인 폼으로 다시 리다이렉트하지 않고, 에러 메시지와 함께 로그인 폼을 다시 보여줍니다.
         }
     }
 
@@ -45,7 +45,6 @@ public class UserController {
         return "redirect:/"; // 홈 페이지로 리다이렉트
     }
 
-
     @GetMapping("/new")
     public String createUserForm(Model model) {
         model.addAttribute("user", new User());
@@ -54,16 +53,13 @@ public class UserController {
 
     @PostMapping("/new")
     public String createUser(User user, Model model) {
-        if (userService.existsByUserId(user.getUserId())) {
-            model.addAttribute("user", user);
-            model.addAttribute("errorMessage", "이미 존재하는 ID입니다. 다른 ID를 사용해주세요."); // Error message for the user
-            return "users/createForm";
-        }
         try {
             userService.saveUser(user);
-            return "users/loginForm";
-        } catch (Exception e) {
-            return "redirect:/error";
+            return "redirect:/users/login"; // 회원 등록 성공 시 로그인 폼으로 리다이렉트
+        } catch (IllegalStateException e) {
+            model.addAttribute("user", user);
+            model.addAttribute("errorMessage", e.getMessage()); // 예외 메시지를 errorMessage로 설정
+            return "users/createForm"; // 회원 등록 실패 시, 회원 등록 폼으로 돌아갑니다.
         }
     }
 

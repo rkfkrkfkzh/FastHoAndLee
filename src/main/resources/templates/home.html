@@ -2,28 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>객실 예약 사이트 홈</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>호텔 앤 리조또</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<header>
-    <h1>객실 예약 사이트</h1>
-    <nav>
-        <ul>
-            <li><a th:href="@{/}">홈</a></li>
-            <!-- 세션에 user가 있는지 확인하여 로그인/로그아웃 링크 표시 -->
-            <li th:if="${session.user == null}"><a th:href="@{/users/login}">로그인</a></li>
-            <li th:if="${session.user != null}"><a th:href="@{/users/logout}">로그아웃</a></li>
-            <li><a th:href="@{/reservations/list}">예약 목록</a></li>
-            <li><a th:href="@{/rooms/list}">객실 목록</a></li>
-            <li><a th:href="@{/users/list}">사용자 목록</a></li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="header :: header"></div>
 
-<div>
+<div class="container">
     <h2>환영합니다!</h2>
     <p>여기는 객실을 예약할 수 있는 웹사이트입니다. 로그인하거나 계정을 만들어 예약을 진행해주세요.</p>
 </div>
+
+<div th:replace="footer :: footer"></div>
 </body>
 </html>
