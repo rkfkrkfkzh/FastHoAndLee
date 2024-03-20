@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String userId, @RequestParam String userPwd, HttpSession session) {
         if (userService.loginUser(userId, userPwd).isPresent()) {
-            session.invalidate(); // 기존 세션 무효화
+            session.setAttribute("user", userId.getClass()); // 세션에 사용자 정보 저장
             return "redirect:/"; // 로그인 성공 시 홈 페이지로 리다이렉트
         } else {
             return "redirect:/users/login?error"; // 로그인 실패 시 로그인 페이지로 다시 리다이렉트하고 오류 메시지 플래그 전달

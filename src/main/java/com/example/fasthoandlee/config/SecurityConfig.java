@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/reservations").authenticated() // 특정요청 인증 필요
+//                .antMatchers("/reservations").authenticated() // 특정요청 인증 필요
                 .anyRequest().permitAll() // 나머지 요청은 허용
                 .and()
                 .formLogin()
