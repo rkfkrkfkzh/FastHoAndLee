@@ -20,6 +20,4 @@ public class HomeController {
     public List<Room> getRecentRooms() {
         return roomService.findAllRooms(); // 최근 객실을 조회하는 서비스 메서드
     }
-
-
 }

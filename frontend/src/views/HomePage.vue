@@ -1,38 +1,28 @@
 <template>
   <div>
-    <HeaderComponent />
     <div class="container">
       <h2>환영합니다!</h2>
       <p>여기는 객실을 예약할 수 있는 웹사이트입니다. 로그인하거나 계정을 만들어 예약을 진행해주세요.</p>
       <h3>최근 등록된 객실</h3>
-      <ul class="list-group">
-        <li v-for="room in recentRooms" :key="room.id" class="list-group-item">
-          <div class="row">
-            <div class="col-2">
-              <img :src="room.imageUrl" class="img-fluid" alt="Room Image" style="max-width: 100px;">
-            </div>
-            <div class="col">
-              <h5>{{ room.name }}</h5>
-              <p>{{ room.description }}</p>
+      <div class="row">
+        <div v-for="room in recentRooms" :key="room.id" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img :src="room.imageUrl" class="card-img-top" alt="Room Image">
+            <div class="card-body">
+              <h5 class="card-title">{{ room.name }}</h5>
+              <p class="card-text">{{ room.description }}</p>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 
 <script>
-import HeaderComponent from '../components/HeaderComponent.vue'
-import FooterComponent from '../components/FooterComponent.vue'
 import axios from 'axios';
 
 export default {
-  components: {
-    HeaderComponent,
-    FooterComponent
-  },
   data() {
     return {
       recentRooms: []
@@ -50,3 +40,18 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* 필요한 스타일 추가 */
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: .25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
+}
+</style>

@@ -24,5 +24,32 @@ export default {
 </script>
 
 <style scoped>
-/* 스타일 작성 */
-</style>
+/* Footer 전체의 배경색 및 폰트색 설정 */
+footer {
+  background-color: #343a40; /* 배경색 */
+  color: #ffffff; /* 폰트색 */
+}
+
+/* 컨테이너의 패딩 및 폰트 사이즈 조정 */
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 문구 간격 설정 */
+p {
+  margin-bottom: 5px;
+}
+
+/* 이메일 링크 스타일링 */
+a {
+  color: #ffffff; /* 링크 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 링크 호버 시 색상 변경 */
+a:hover {
+  color: #adb5bd;
+}</style>
