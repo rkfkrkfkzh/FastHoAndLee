@@ -15,11 +15,25 @@ const routes = [
         component: () => import('../views/ErrorPage.vue'),
     },
     {
-        path: '/api/users/login',
+        path: '/login',
         name: 'login',
         component: () => import('../views/LoginForm.vue'),
+    },
+    {
+        path: '/rooms',
+        name: 'RoomList',
+        component: () => import('../views/RoomList.vue'),
+    },
+    {
+        path: '/createRoom',
+        name: 'CreateRoom',
+        component: () => import('../views/CreateRoom.vue'),
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: () => import('../views/UserRegister.vue'),
     }
-    // 필요한 라우트들을 추가
 ];
 
 const routerInstance = new VueRouter({

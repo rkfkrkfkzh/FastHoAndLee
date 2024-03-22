@@ -13,19 +13,19 @@
               <router-link to="/" class="nav-link">홈</router-link>
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
-              <router-link to="/api/users/login" class="nav-link">로그인</router-link>
+              <router-link to="/users/login" class="nav-link">로그인</router-link>
             </li>
             <li class="nav-item" v-if="isLoggedIn">
               <a href="#" class="nav-link" @click="logout">로그아웃</a>
             </li>
             <li class="nav-item">
-              <router-link to="/api/reservations/list" class="nav-link">예약 목록</router-link>
+              <router-link to="/reservations/list" class="nav-link">예약 목록</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/api/rooms/list" class="nav-link">객실 목록</router-link>
+              <router-link to="/rooms" class="nav-link">객실 목록</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/api/users/list" class="nav-link">사용자 목록</router-link>
+              <router-link to="/users/list" class="nav-link">사용자 목록</router-link>
             </li>
           </ul>
         </div>

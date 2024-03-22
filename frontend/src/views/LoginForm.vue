@@ -2,6 +2,7 @@
   <div class="login-container">
     <h1 class="login-title">로그인</h1>
     <form @submit.prevent="login" class="login-form">
+      <!-- 로그인 폼 -->
       <div class="form-group">
         <label for="userId">사용자 ID:</label>
         <input type="text" id="userId" v-model="userId" required class="form-control">
@@ -13,6 +14,12 @@
       <button type="submit" class="btn btn-primary">로그인</button>
       <p v-if="loginError" class="error">{{ loginErrorMessage }}</p>
     </form>
+    <!-- 회원가입 링크 -->
+    <div class="register-link">
+      <p>계정이 없으신가요?
+        <router-link to="/register" class="btn btn-link">회원가입</router-link>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -25,12 +32,19 @@ export default {
       userId: '',
       userPwd: '',
       loginError: false,
-      loginErrorMessage: ''
+      loginErrorMessage: '',
+      csrfToken: '' // CSRF 토큰을 저장할 변수 추가
     }
   },
   methods: {
     login() {
-      axios.post('/api/users/login', { userId: this.userId, userPwd: this.userPwd })
+      // 서버에서 CSRF 토큰을 받아온다고 가정
+      const csrfToken = ''; // CSRF 토큰을 받아와서 저장
+      axios.post('/api/users/login', {userId: this.userId, userPwd: this.userPwd},{
+        headers: {
+          'X-CSRF-TOKEN': csrfToken  // CSRF 토큰을 요청 헤더에 포함
+        }
+      })
           .then(() => {
             // 필요한 로직 구현
           })

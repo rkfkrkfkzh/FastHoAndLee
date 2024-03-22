@@ -3,42 +3,35 @@ package com.example.fasthoandlee.controller;
 import com.example.fasthoandlee.domain.Room;
 import com.example.fasthoandlee.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/rooms")
+@RestController
+@RequestMapping("/api/rooms")
 @RequiredArgsConstructor
 public class RoomController {
 
     private final RoomService roomService;
 
-    @GetMapping("/list")
-    public String getAllRooms(Model model) {
-        model.addAttribute("rooms", roomService.findAllRooms());
-        return "rooms/list";
+    @GetMapping
+    public ResponseEntity<?> getAllRooms() {
+        return ResponseEntity.ok(roomService.findAllRooms());
     }
 
-    @GetMapping("/new")
-    public String RoomForm(Model model) {
-        model.addAttribute("room", new Room());
-        return "rooms/createForm";
-    }
-
-    @PostMapping("/new")
-    public String createRoom(Room room) {
+    @PostMapping
+    public ResponseEntity<?> createRoom(@RequestBody Room room) {
         try {
             roomService.saveRoom(room);
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
-            return "redirect:/error";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
         roomService.deleteRoom(id);
-        return "redirect:/rooms";
+        return ResponseEntity.noContent().build();
     }
 }

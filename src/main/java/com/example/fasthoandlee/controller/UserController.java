@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok().build(); // 로그아웃 성공 시 200 OK 응답 반환
     }
 
-    @PostMapping("/new")
+    @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         userService.saveUser(user);
         return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
