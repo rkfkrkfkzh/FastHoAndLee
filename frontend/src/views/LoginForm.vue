@@ -33,26 +33,23 @@ export default {
       userPwd: '',
       loginError: false,
       loginErrorMessage: '',
-      csrfToken: '' // CSRF 토큰을 저장할 변수 추가
     }
   },
   methods: {
     login() {
-      // 서버에서 CSRF 토큰을 받아온다고 가정
-      const csrfToken = ''; // CSRF 토큰을 받아와서 저장
-      axios.post('/api/users/login', {userId: this.userId, userPwd: this.userPwd},{
-        headers: {
-          'X-CSRF-TOKEN': csrfToken  // CSRF 토큰을 요청 헤더에 포함
-        }
+      axios.post('/api/users/login', {
+        userId: this.userId,
+        userPwd: this.userPwd
       })
-          .then(() => {
-            // 필요한 로직 구현
+          .then(response => {
+            const token = response.data; // 서버로부터 받은 토큰 저장
+            localStorage.setItem('jwtToken', token); // 토큰을 로컬 스토리지에 저장
+            // 로그인 성공 시 리다이렉션 등의 작업 수행
           })
           .catch(error => {
-            // 로그인 실패 시
             console.error('로그인 실패:', error.response.data);
             this.loginError = true;
-            this.loginErrorMessage = error.response ? error.response.data : '서버 오류가 발생했습니다.'; // 서버에서 받은 에러 메시지를 표시합니다.
+            this.loginErrorMessage = error.response ? error.response.data : '서버 오류가 발생했습니다.';
           });
     }
   }

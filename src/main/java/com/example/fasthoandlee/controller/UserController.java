@@ -1,5 +1,6 @@
 package com.example.fasthoandlee.controller;
 
+import com.example.fasthoandlee.config.security.JwtConfig;
 import com.example.fasthoandlee.domain.User;
 import com.example.fasthoandlee.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,16 +17,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final JwtConfig jwtConfig;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String userId, @RequestParam String userPwd, HttpSession session) {
-        Optional<User> user = userService.loginUser(userId, userPwd);
-        if (user.isPresent()) {
-            session.setAttribute("user", userId);
-            return ResponseEntity.ok().build(); // 로그인 성공 시 200 OK 응답 반환
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials"); // 로그인 실패 시 401 Unauthorized 응답 반환
-        }
+    public String login(User user) {
+        User users = userService.findByUserIdAndUserPwd(user.getUserId(), user.getUserPwd());
+        return jwtConfig.createToken(users.getUserId(), Arrays.asList(users.getUserRole().getValue()));
     }
 
     @GetMapping("/logout")
