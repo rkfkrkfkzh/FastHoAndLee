@@ -1,6 +1,6 @@
 package com.example.fasthoandlee.controller;
 
-import com.example.fasthoandlee.config.security.JwtConfig;
+import com.example.fasthoandlee.config.security.JwtUtil;
 import com.example.fasthoandlee.domain.User;
 import com.example.fasthoandlee.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,12 +18,18 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final JwtConfig jwtConfig;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public String login(User user) {
-        User users = userService.findByUserIdAndUserPwd(user.getUserId(), user.getUserPwd());
-        return jwtConfig.createToken(users.getUserId(), Arrays.asList(users.getUserRole().getValue()));
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) {
+        Optional<User> loginUser = userService.loginUser(user.getUserId(), user.getUserPwd());
+
+        if (loginUser.isPresent()) {
+            final String jwt = jwtUtil.generateToken(user.getUserId());
+            return ResponseEntity.ok(jwt); // 로그인 성공 시 JWT 반환
+        } else {
+            return new ResponseEntity<>("로그인 실패", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/logout")
