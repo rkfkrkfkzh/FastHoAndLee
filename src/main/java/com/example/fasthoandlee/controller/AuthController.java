@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -15,11 +17,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
         return authService.loginAndGenerateToken(user.getUserId(), user.getUserPwd())
-                .map(token -> ResponseEntity.ok().body("로그인 성공! 토큰: " + token)) // 성공 시, 토큰 반환
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패!!! 다시 입력해주세요"));
+                .map(token -> ResponseEntity.ok().body(Map.of("token", token))) // 성공 시, 토큰을 포함한 JSON 객체 반환
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인 실패!!! 다시 입력해주세요")));
     }
+
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {

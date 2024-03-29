@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <h1 class="login-title">로그인</h1>
-    <form @submit.prevent="login" class="login-form">
+    <form @submit.prevent="attemptLogin" class="login-form">
       <!-- 로그인 폼 -->
       <div class="form-group">
         <label for="userId">사용자 ID:</label>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import axios from "axios";
 
 export default {
   data() {
@@ -34,26 +36,29 @@ export default {
       loginErrorMessage: '',
     }
   },
-  // 로그인 폼 컴포넌트 내 methods 수정
   methods: {
-    login() {
-      this.$store.dispatch('login', { userId: this.userId, userPwd: this.userPwd })
-          .then(success => {
-            if (success) {
-              this.$router.push('/'); // 로그인 성공 시 홈페이지로 이동
-              this.$emit('login-success'); // 로그인 성공 시 이벤트 발생
-              import('../utils/EventBus').then(({ EventBus }) => {
-                EventBus.$emit('login-success'); // 이벤트 버스를 통한 이벤트 발생
-              });
-            } else {
-              this.loginError = true;
-              this.loginErrorMessage = '로그인 실패: 잘못된 사용자 ID 또는 비밀번호입니다.';
-            }
+    ...mapActions(['login']), // Vuex 액션을 매핑, logout 제거
+    attemptLogin() {
+      axios.post('/api/auth/login', {
+        userId: this.userId,
+        userPwd: this.userPwd
+      })
+          .then(response => {
+            const token = response.data.token; // 수정된 서버 응답 구조에 맞게 토큰 값을 추출
+            this.login(token); // Vuex의 login 액션을 호출
+            this.$router.push('/');
+          })
+          .catch(error => {
+            console.error('로그인 실패:', error);
+            this.loginError = true;
+            // 수정된 서버 응답 구조에 따라 에러 메시지 추출 방식을 변경
+            this.loginErrorMessage = error.response ? error.response.data.message : '서버 오류가 발생했습니다.';
           });
-    }
+    },
   }
 }
 </script>
+
 
 <style scoped>
 .login-container {

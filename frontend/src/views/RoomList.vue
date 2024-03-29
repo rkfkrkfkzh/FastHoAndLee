@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="mb-4">Room List</h1>
     <div class="row">
       <div v-for="room in rooms" :key="room.id" class="col-md-4">
         <div class="card mb-4 shadow-sm">
