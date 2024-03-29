@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   data() {
@@ -35,21 +34,21 @@ export default {
       loginErrorMessage: '',
     }
   },
+  // 로그인 폼 컴포넌트 내 methods 수정
   methods: {
     login() {
-      axios.post('/api/users/login', {
-        userId: this.userId,
-        userPwd: this.userPwd
-      })
-          .then(response => {
-            const token = response.data; // 서버로부터 받은 토큰 저장
-            localStorage.setItem('jwtToken', token); // 토큰을 로컬 스토리지에 저장
-            // 로그인 성공 시 리다이렉션 등의 작업 수행
-          })
-          .catch(error => {
-            console.error('로그인 실패:', error.response.data);
-            this.loginError = true;
-            this.loginErrorMessage = error.response ? error.response.data : '서버 오류가 발생했습니다.';
+      this.$store.dispatch('login', { userId: this.userId, userPwd: this.userPwd })
+          .then(success => {
+            if (success) {
+              this.$router.push('/'); // 로그인 성공 시 홈페이지로 이동
+              this.$emit('login-success'); // 로그인 성공 시 이벤트 발생
+              import('../utils/EventBus').then(({ EventBus }) => {
+                EventBus.$emit('login-success'); // 이벤트 버스를 통한 이벤트 발생
+              });
+            } else {
+              this.loginError = true;
+              this.loginErrorMessage = '로그인 실패: 잘못된 사용자 ID 또는 비밀번호입니다.';
+            }
           });
     }
   }

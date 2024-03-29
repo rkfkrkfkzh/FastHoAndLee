@@ -1,20 +1,39 @@
-// store/index.js
-import Vue from 'vue'; // Vue 모듈을 import 합니다.
+import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
-Vue.use(Vuex); // Vue.use()를 사용하여 Vuex를 플러그인으로 등록합니다.
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        // 상태 정의
+        isLoggedIn: false
     },
     mutations: {
-        // 상태 변경 메서드 정의
+        setLoginState(state, isLoggedIn) {
+            state.isLoggedIn = isLoggedIn;
+        }
     },
     actions: {
-        // 비동기 작업 처리 메서드 정의
-    },
-    modules: {
-        // 필요한 경우에 모듈 추가
+        async login({ commit }, { userId, userPwd }) {
+            try {
+                const response = await axios.post('/api/auth/login', { userId, userPwd });
+                const token = response.data;
+                localStorage.setItem('jwtToken', token); // 토큰을 로컬 스토리지에 저장
+                commit('setLoginState', true); // 로그인 상태를 true로 변경
+                return true; // 로그인 성공
+            } catch (error) {
+                console.error('로그인 실패:', error.response ? error.response.data : '서버 오류가 발생했습니다.');
+                return false; // 로그인 실패
+            }
+        },
+        logout({ commit }) {
+            localStorage.removeItem('jwtToken'); // 토큰 삭제
+            commit('setLoginState', false); // 로그인 상태를 false로 변경
+        },
+        checkLoginStatus({ commit }) {
+            const token = localStorage.getItem('jwtToken');
+            commit('setLoginState', !!token);
+        }
     }
+
 });

@@ -2,13 +2,11 @@ package com.example.fasthoandlee.service;
 
 import com.example.fasthoandlee.domain.Reservation;
 import com.example.fasthoandlee.repository.ReservationRepository;
-import com.example.fasthoandlee.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

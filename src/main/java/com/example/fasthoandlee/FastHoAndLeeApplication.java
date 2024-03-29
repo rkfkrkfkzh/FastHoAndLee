@@ -9,5 +9,4 @@ public class FastHoAndLeeApplication {
     public static void main(String[] args) {
         SpringApplication.run(FastHoAndLeeApplication.class, args);
     }
-
 }

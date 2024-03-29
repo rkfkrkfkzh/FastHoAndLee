@@ -1,6 +1,6 @@
-// UserDetailsService를 구현하는 새로운 클래스 생성
 package com.example.fasthoandlee.service;
 
+import com.example.fasthoandlee.config.security.JwtUtil;
 import com.example.fasthoandlee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,15 +17,19 @@ import java.util.Collections;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUserId(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUserId(),
-                        user.getUserPwd(),
-                        Collections.emptyList() // 권한은 나중에 추가해야 함
-                ))
+                .map(user -> {
+                    String token = jwtUtil.generateToken(user.getUserId());
+                    return new org.springframework.security.core.userdetails.User(
+                            user.getUserId(),
+                            user.getUserPwd(),
+                            Collections.emptyList() // 권한은 나중에 추가해야 함
+                    );
+                })
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
     }
 }

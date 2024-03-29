@@ -26,6 +26,7 @@ export default {
     };
   },
   mounted() {
+    // axios 요청을 수정하여, 항상 인증 헤더 없이 API를 호출합니다.
     axios.get('/api/rooms')
         .then(response => {
           this.rooms = response.data;
@@ -42,3 +43,4 @@ export default {
   }
 }
 </script>
+
