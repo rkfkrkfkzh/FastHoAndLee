@@ -21,7 +21,9 @@ public class JwtUtil {
 
     // 1. JWT 생성 메서드
     public String generateToken(String username) {
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        // Base64로 인코딩된 시크릿 키 사용
+        byte[] secretBytes = Base64.getEncoder().encode(secretKey.getBytes());
+        Key key = Keys.hmacShaKeyFor(secretBytes);
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -29,6 +31,7 @@ public class JwtUtil {
                 .signWith(key)
                 .compact();
     }
+
 
     // 2. JWT 토큰 유효성 검사 메서드
     public Boolean validateToken(String token, String username) {

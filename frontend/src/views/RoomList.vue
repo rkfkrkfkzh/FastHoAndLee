@@ -25,8 +25,15 @@ export default {
     };
   },
   mounted() {
-    // axios 요청을 수정하여, 항상 인증 헤더 없이 API를 호출합니다.
-    axios.get('/api/rooms')
+    // 로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem('token');
+
+    // axios 요청에 인증 헤더 추가
+    axios.get('/api/rooms', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
         .then(response => {
           this.rooms = response.data;
         })
