@@ -19,4 +19,8 @@ public class Reservation {
 
     private Date checkIn;
     private Date checkOut;
+
+    @ManyToOne
+//    @JoinColumn(name = "user_id")
+    private User user;
 }

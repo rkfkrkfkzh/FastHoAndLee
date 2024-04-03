@@ -1,19 +1,23 @@
 <template>
   <div>
-    <div class="row">
-      <div v-for="room in rooms" :key="room.id" class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <img class="card-img-top" :src="room.imageUrl" alt="Room Image">
-          <div class="card-body">
-            <h5 class="card-title">{{ room.name }}</h5>
-            <p class="card-text">금액 : {{ formatPrice(room.price) }}원</p>
-            <p class="card-text">{{ room.description }}</p>
+    <div class="container mt-5">
+      <div class="row">
+        <div v-for="room in rooms" :key="room.id" class="col-md-4 d-flex align-items-stretch">
+          <div class="card mb-4 shadow-sm flex-fill">
+            <img class="card-img-top" :src="room.imageUrl" alt="Room Image" style="height: 200px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ room.name }}</h5>
+              <p class="card-text">금액: {{ formatPrice(room.price) }}원</p>
+              <p class="card-text">{{ room.description }}</p>
+              <a href="#" class="btn btn-primary mt-auto">자세히 보기</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';

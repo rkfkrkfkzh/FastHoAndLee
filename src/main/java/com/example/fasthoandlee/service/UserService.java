@@ -1,6 +1,5 @@
 package com.example.fasthoandlee.service;
 
-import com.example.fasthoandlee.config.security.JwtUtil;
 import com.example.fasthoandlee.domain.User;
 import com.example.fasthoandlee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

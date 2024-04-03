@@ -15,18 +15,14 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
-    public List<Reservation> findAllReservations() {
-        return reservationRepository.findAll();
-    }
-
+    // 예약 등록
     @Transactional
-    public void saveReservation(Reservation reservation) {
+    public void createReservation(Reservation reservation) {
         reservationRepository.save(reservation);
     }
 
-    @Transactional
-    public void deleteReservation(Long id) {
-        reservationRepository.deleteById(id);
+    // 사용자 ID로 예약 조회
+    public List<Reservation> findReservationsByUserId(Long userId) {
+        return reservationRepository.findByUserId(userId);
     }
-
 }
