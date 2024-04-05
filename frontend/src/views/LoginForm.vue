@@ -52,7 +52,7 @@ export default {
             console.error('로그인 실패:', error);
             this.loginError = true;
             // 수정된 서버 응답 구조에 따라 에러 메시지 추출 방식을 변경
-            this.loginErrorMessage = error.response ? error.response.data.message : '서버 오류가 발생했습니다.';
+            this.loginErrorMessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : '서버 오류가 발생했습니다. 다시 시도해주세요.';
           });
     },
   }

@@ -28,4 +28,8 @@ public class RoomService {
     public void deleteRoom(Long id) {
         roomRepository.deleteById(id);
     }
+
+    public Room findRoomById(Long id) {
+        return roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid room Id"));
+    }
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -15,12 +15,13 @@ public class Reservation {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "room_id") // 추가
     private Room room;
 
-    private Date checkIn;
-    private Date checkOut;
-
     @ManyToOne
-//    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") // 추가
     private User user;
+
+    private LocalDate checkIn; // 수정: Date -> LocalDate
+    private LocalDate checkOut; // 수정: Date -> LocalDate
 }

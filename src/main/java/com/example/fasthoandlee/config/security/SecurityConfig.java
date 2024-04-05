@@ -31,9 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/users/*","/api/home").permitAll()
-                .antMatchers("/api/rooms/**").authenticated()
-                .and()
+                  .antMatchers("/api/users/*","/api/home").permitAll()
+                  .antMatchers("/api/rooms/**","/api/reservations/**").authenticated()
+                  .and()
+                .exceptionHandling()
+                  .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                  .and()
                 .addFilterBefore(new JwtTokenFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .cors(); // CORS 활성화
     }

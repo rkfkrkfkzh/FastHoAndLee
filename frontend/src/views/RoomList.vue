@@ -9,8 +9,7 @@
               <h5 class="card-title">{{ room.name }}</h5>
               <p class="card-text">금액: {{ formatPrice(room.price) }}원</p>
               <p class="card-text">{{ room.description }}</p>
-              <a href="#" class="btn btn-primary mt-auto">자세히 보기</a>
-            </div>
+              <router-link :to="`/rooms/${room.id}`" class="btn btn-primary mt-auto">자세히 보기</router-link>            </div>
           </div>
         </div>
       </div>
@@ -29,15 +28,8 @@ export default {
     };
   },
   mounted() {
-    // 로컬 스토리지에서 토큰 가져오기
-    const token = localStorage.getItem('token');
-
     // axios 요청에 인증 헤더 추가
-    axios.get('/api/rooms', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    axios.get('/api/rooms', )
         .then(response => {
           this.rooms = response.data;
         })

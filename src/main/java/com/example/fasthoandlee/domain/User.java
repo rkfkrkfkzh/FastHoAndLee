@@ -3,12 +3,12 @@ package com.example.fasthoandlee.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -31,4 +31,8 @@ public class User {
     private String gender; // 성별
     private LocalDateTime signUpDate = LocalDateTime.now(); // 회원 가입일, 기본값으로 현재 시간 설정
     private String role = "USER"; // 권한, 기본값으로 "USER" 설정
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Reservation> reservation = new ArrayList<>();
+
 }

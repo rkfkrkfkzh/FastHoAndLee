@@ -5,8 +5,6 @@ import com.example.fasthoandlee.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +19,24 @@ public class ReservationController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> createReservation(@RequestBody Reservation reservation) {
-        reservationService.createReservation(reservation);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "예약이 성공적으로 등록되었습니다."));
+        try {
+            Reservation createdReservation = reservationService.reserveRoom(reservation);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Reservation>> getReservationsByUserId(@PathVariable Long userId) {
-        List<Reservation> reservations = reservationService.findReservationsByUserId(userId);
-        return new ResponseEntity<>(reservations, HttpStatus.OK);
+        try {
+            List<Reservation> reservations = reservationService.findReservationsByUserId(userId);
+            if (reservations.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reservations);
+            }
+            return new ResponseEntity<>(reservations, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
