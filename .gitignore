@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 아래의 디렉터리는 Git Commit 예외 처리 ###
+/frontend/node_modules
+/src/main/resources/static
