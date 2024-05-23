@@ -1,4 +1,3 @@
-// SecurityConfig 코드 수정
 package com.example.fasthoandlee.config.security;
 
 import com.example.fasthoandlee.service.UserDetailsServiceImpl;
@@ -13,6 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
+
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -29,16 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable()
                 .authorizeRequests()
-                  .antMatchers("/api/users/*","/api/home").permitAll()
-                  .antMatchers("/api/rooms/**","/api/reservations/**").authenticated()
-                  .and()
+                .antMatchers("/api/users/*", "/api/home").permitAll()
+                .antMatchers("/api/rooms/**", "/api/reservations/**").authenticated()
+                .and()
                 .exceptionHandling()
-                  .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                  .and()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
                 .addFilterBefore(new JwtTokenFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .cors(); // CORS 활성화
+                .cors();
     }
 
     @Override
@@ -51,4 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public HttpFirewall allowedHeadersFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowedHeaderNames(header -> {
+            List<String> allowedHeaders = Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Headers", "Access-Control-Request-Method", "X-CSRF-TOKEN");
+            return allowedHeaders.contains(header);
+        });
+        return firewall;
+    }
+
 }
