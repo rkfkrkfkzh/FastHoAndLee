@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
@@ -57,14 +58,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    //    @Bean
+//    public HttpFirewall allowedHeadersFirewall() {
+//        StrictHttpFirewall firewall = new StrictHttpFirewall();
+//        firewall.setAllowedHeaderNames(header -> {
+//            List<String> allowedHeaders = Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "accept", "Accept", "Origin", "Access-Control-Request-Headers", "Access-Control-Request-Method", "X-CSRF-TOKEN");
+//            return allowedHeaders.contains(header);
+//        });
+//        return firewall;
+//    }
     @Bean
-    public HttpFirewall allowedHeadersFirewall() {
+    public StrictHttpFirewall httpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowedHeaderNames(header -> {
-            List<String> allowedHeaders = Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Headers", "Access-Control-Request-Method", "X-CSRF-TOKEN");
-            return allowedHeaders.contains(header);
-        });
+        firewall.setAllowedHeaderNames((header) -> true);
+        firewall.setAllowedHeaderValues((header) -> true);
+        firewall.setAllowedParameterNames((parameter) -> true);
         return firewall;
     }
-
 }

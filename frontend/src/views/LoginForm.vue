@@ -39,7 +39,7 @@ export default {
   methods: {
     ...mapActions(['login']), // Vuex 액션을 매핑, logout 제거
     attemptLogin() {
-      axios.post('/api/auth/login', {
+      axios.post('/auth/login', {
         userId: this.userId,
         userPwd: this.userPwd
       })

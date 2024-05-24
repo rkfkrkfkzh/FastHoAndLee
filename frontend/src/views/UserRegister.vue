@@ -184,7 +184,7 @@ export default {
       }
 
       // 나이 제한을 만족하면 회원가입 로직 진행
-      axios.post('/api/users/register', {
+      axios.post('/users/register', {
         userId: this.userId,
         userPwd: this.userPwd,
         userName: this.userName,

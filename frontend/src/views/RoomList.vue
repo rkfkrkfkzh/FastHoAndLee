@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     // axios 요청에 인증 헤더 추가
-    axios.get('/api/rooms', )
+    axios.get('/rooms', )
         .then(response => {
           this.rooms = response.data;
         })

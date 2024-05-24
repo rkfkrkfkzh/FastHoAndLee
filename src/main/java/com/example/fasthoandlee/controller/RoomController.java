@@ -19,7 +19,7 @@ public class RoomController {
         return ResponseEntity.ok(roomService.findAllRooms());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createRoom(@RequestBody Room room) {
         try {
             roomService.saveRoom(room);

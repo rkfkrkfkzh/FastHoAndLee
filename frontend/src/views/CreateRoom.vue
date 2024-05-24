@@ -1,11 +1,10 @@
-<!-- views/CreateRoom.vue -->
 <template>
   <div>
-    <h1>Create Room</h1>
+    <h1>객실 등록</h1>
     <form @submit.prevent="createRoom">
-      <label for="name">Room Name:</label>
-      <input type="text" id="name" v-model="room.name">
-      <button type="submit">Create</button>
+      <label for="name">객실 이름:</label>
+      <input type="text" id="name" v-model="room.name" required>
+      <button type="submit">등록</button>
     </form>
   </div>
 </template>
@@ -22,8 +21,8 @@ export default {
   methods: {
     async createRoom() {
       try {
-        await this.$axios.post('/rooms', this.room)
-        this.$router.push('/')
+        await this.$axios.post('/rooms/create', this.room)
+        this.$router.push('/rooms')
       } catch (error) {
         console.error('Error creating room:', error)
       }

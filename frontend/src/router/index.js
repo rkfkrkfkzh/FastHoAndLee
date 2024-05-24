@@ -30,7 +30,7 @@ const routes = [
         component: () => import('../views/RoomDetail.vue'), // 객실 상세 정보를 보여줄 컴포넌트
     },
     {
-        path: '/createRoom',
+        path: '/rooms/create',
         name: 'CreateRoom',
         component: () => import('../views/CreateRoom.vue'),
     },

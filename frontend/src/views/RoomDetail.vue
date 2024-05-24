@@ -41,7 +41,7 @@ export default {
   },
   mounted() {
     const roomId = this.$route.params.id;
-    axios.get(`/api/rooms/${roomId}`)
+    axios.get(`/rooms/${roomId}`)
         .then(response => {
           this.room = response.data;
         })
@@ -67,7 +67,7 @@ export default {
         checkIn: this.checkIn,
         checkOut: this.checkOut
       };
-      axios.post('/api/reservations/create', reservationData) // 변경된 부분
+      axios.post('/reservations/create', reservationData) // 변경된 부분
           .then(response => {
             console.log('Reservation successful:', response);
             alert('예약이 완료되었습니다.');

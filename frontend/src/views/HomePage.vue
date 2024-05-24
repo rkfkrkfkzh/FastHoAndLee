@@ -31,7 +31,7 @@ export default {
   },
   mounted() {
     // Spring Boot API를 호출하여 최근 객실 데이터를 가져오는 메서드
-    axios.get('/api/home') // Spring Boot API 엔드포인트에 대한 URL을 지정
+    axios.get('/home') // Spring Boot API 엔드포인트에 대한 URL을 지정
         .then(response => {
           this.recentRooms = response.data;
         })

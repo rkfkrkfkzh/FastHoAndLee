@@ -27,6 +27,9 @@
             <li class="nav-item">
               <router-link to="/users/list" class="nav-link">사용자 목록</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/rooms/create" class="nav-link">객실 등록</router-link>
+            </li>
           </ul>
         </div>
       </div>
