@@ -29,13 +29,13 @@ public class RoomController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/del/{id}")
     public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
         roomService.deleteRoom(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<Room> getRoomDetail(@PathVariable Long id) {
         Room room = roomService.findRoomById(id);
         return ResponseEntity.ok(room);

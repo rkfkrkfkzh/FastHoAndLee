@@ -11,7 +11,7 @@
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">{{ room.name }}</h5>
               <p class="card-text mb-4">{{ room.description }}</p>
-              <router-link :to="`/rooms/${room.id}`" class="btn btn-primary mt-auto">자세히 보기</router-link>
+              <router-link :to="`/rooms/detail/${room.id}`" class="btn btn-primary mt-auto">자세히 보기</router-link>
             </div>
           </div>
         </div>

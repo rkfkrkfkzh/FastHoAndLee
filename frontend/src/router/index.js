@@ -25,7 +25,7 @@ const routes = [
         component: () => import('../views/RoomList.vue'),
     },
     {
-        path: '/rooms/:id', // :id는 동적 매개변수
+        path: '/rooms/detail/:id', // :id는 동적 매개변수
         name: 'RoomDetail',
         component: () => import('../views/RoomDetail.vue'), // 객실 상세 정보를 보여줄 컴포넌트
     },

@@ -9,7 +9,7 @@
               <h5 class="card-title">{{ room.name }}</h5>
               <p class="card-text">금액: {{ formatPrice(room.price) }}원</p>
               <p class="card-text">{{ room.description }}</p>
-              <router-link :to="`/rooms/${room.id}`" class="btn btn-primary mt-auto">자세히 보기</router-link>            </div>
+              <router-link :to="`/rooms/detail/${room.id}`" class="btn btn-primary mt-auto">자세히 보기</router-link>            </div>
           </div>
         </div>
       </div>

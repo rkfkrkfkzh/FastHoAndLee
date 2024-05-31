@@ -27,8 +27,9 @@
             <li class="nav-item">
               <router-link to="/users/list" class="nav-link">사용자 목록</router-link>
             </li>
-            <li class="nav-item">
-              <router-link to="/rooms/create" class="nav-link">객실 등록</router-link>
+            <!-- 객실 등록 링크를 ADMIN 역할에만 보이도록 조건 추가 -->
+            <li class="nav-item" v-if="isLoggedIn">
+            <router-link to="/rooms/create" class="nav-link">객실 등록</router-link>
             </li>
           </ul>
         </div>
@@ -44,7 +45,7 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.state.isLoggedIn;
-    }
+    },
   },
   created() {
     this.$store.dispatch('checkLoginStatus');

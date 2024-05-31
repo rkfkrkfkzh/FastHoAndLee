@@ -41,7 +41,7 @@ export default {
   },
   mounted() {
     const roomId = this.$route.params.id;
-    axios.get(`/rooms/${roomId}`)
+    axios.get(`/rooms/detail/${roomId}`)
         .then(response => {
           this.room = response.data;
         })

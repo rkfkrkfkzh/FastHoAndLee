@@ -5,17 +5,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        isLoggedIn: false
+        isLoggedIn: false,
     },
     mutations: {
         setLoginState(state, isLoggedIn) {
             state.isLoggedIn = isLoggedIn;
-        }
+        },
     },
     actions: {
-        login({ commit }, token) {
+        login({ commit }, token ) { // 역할 정보도 함께 전달
             localStorage.setItem('jwtToken', token);
             commit('setLoginState', true);
+            commit('setUserRole'); // 사용자 역할 정보 설정
         },
         logout({ commit }) {
             localStorage.removeItem('jwtToken');
