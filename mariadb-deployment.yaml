@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mariadb
+  name: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - image: rkfkzh/mariadb
+          name: mariadb
+          resources: {}
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              value: "1234"  # 실제 비밀번호로 변경
+          volumeMounts:
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: initdb
+          configMap:
+            name: mariadb-initdb-config
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mariadb
+  name: test-db  # 이름을 test-db로 변경
+spec:
+  ports:
+    - name: 3306-3306
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: mariadb
+  type: ClusterIP
+status:
+  loadBalancer: {}

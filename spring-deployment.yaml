@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring
+  name: spring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring
+    spec:
+      containers:
+        - image: rkfkzh/spring
+          name: spring
+          resources: {}
+          env:
+            - name: DB_URL
+              value: "jdbc:mariadb://test-db:3306/hoho"
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASSWORD
+              value: "1234"
+            - name: JWT_TOKEN
+              value: "NH1CN4FB3N2buaV1zZUPvJ6mkvp+Xj3mazMDEm5ofoA="
+            - name: JWT_EXPIRE_TIME
+              value: "604800"
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring
+  name: spring
+spec:
+  ports:
+    - name: 8080-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: spring
+  type: ClusterIP
+status:
+  loadBalancer: {}
