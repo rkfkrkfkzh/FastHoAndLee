@@ -34,11 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/users/*", "/api/home").permitAll()
-                .antMatchers("/api/rooms/**", "/api/reservations/**").authenticated()
+                .antMatchers("/api/rooms/**", "/api/reservations/**", "/reservations/list").authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())

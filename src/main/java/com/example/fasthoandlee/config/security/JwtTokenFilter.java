@@ -45,7 +45,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 logger.error("Token processing error: {}", e.getMessage());
             }
         }
-
         filterChain.doFilter(request, response);
     }
 

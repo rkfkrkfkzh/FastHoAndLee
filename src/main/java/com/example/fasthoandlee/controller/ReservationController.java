@@ -1,5 +1,6 @@
 package com.example.fasthoandlee.controller;
 
+import com.example.fasthoandlee.config.security.JwtUtil;
 import com.example.fasthoandlee.domain.Reservation;
 import com.example.fasthoandlee.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/create")
     public ResponseEntity<Object> createReservation(@RequestBody Reservation reservation) {
@@ -27,9 +29,11 @@ public class ReservationController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Reservation>> getReservationsByUserId(@PathVariable Long userId) {
+    @GetMapping("/list")
+    public ResponseEntity<List<Reservation>> getReservationsByUserId(@RequestHeader("Authorization") String token) {
         try {
+            String jwt = token.substring(7); // "Bearer " 부분 제거
+            Long userId = jwtUtil.extractUserId(jwt);
             List<Reservation> reservations = reservationService.findReservationsByUserId(userId);
             if (reservations.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reservations);

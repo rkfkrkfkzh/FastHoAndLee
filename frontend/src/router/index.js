@@ -38,6 +38,16 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: () => import('../views/UserRegister.vue'),
+    },
+    {
+        path: '/users/list',
+        name: 'UsersList',
+        component: () => import('../views/UserList.vue'),
+    },
+    {
+        path: '/reservations/list',
+        name: 'ReservationList',
+        component: () => import('../views/ReservationList.vue'),
     }
 ];
 

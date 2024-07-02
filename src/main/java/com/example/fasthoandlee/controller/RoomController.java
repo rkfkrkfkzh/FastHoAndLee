@@ -47,6 +47,7 @@ public class RoomController {
         roomService.deleteRoom(id);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/detail/images/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {

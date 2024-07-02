@@ -1,21 +1,22 @@
 <template>
   <div class="container mt-5">
     <div v-if="room" class="card mb-4">
-      <img class="card-img-top" :src="room.imageUrl" alt="Room Image" style="height: 200px; object-fit: cover;">
+      <img class="card-img-top" :src="getImageUrl(room.imageUrl)" alt="Room Image"
+           style="height: 300px; object-fit: cover; width: 100%;">
       <div class="card-body">
         <h5 class="card-title">{{ room.name }}</h5>
         <p class="card-text">금액: {{ formatPrice(room.price) }}원</p>
         <p class="card-text">{{ room.description }}</p>
         <!-- 체크인, 체크아웃 날짜 선택 -->
-        <div>
+        <div class="form-group">
           <label for="checkIn">체크인:</label>
-          <input type="date" id="checkIn" v-model="checkIn">
+          <input type="date" id="checkIn" v-model="checkIn" class="form-control" :min="today">
         </div>
-        <div>
+        <div class="form-group">
           <label for="checkOut">체크아웃:</label>
-          <input type="date" id="checkOut" v-model="checkOut">
+          <input type="date" id="checkOut" v-model="checkOut" class="form-control" :min="checkIn || today">
         </div>
-        <button class="btn btn-primary" @click="reserveRoom">객실 예약하기</button>
+        <button class="btn btn-primary btn-lg btn-block mt-3" @click="reserveRoom">객실 예약하기</button>
       </div>
     </div>
   </div>
@@ -27,14 +28,10 @@ import {mapState} from 'vuex';
 export default {
   data() {
     return {
-      room: {
-        name: '',
-        description: '',
-        price: '',
-        imageUrl: '/images/room.png', // 기본 이미지 경로
-      },
+      room: null,
       checkIn: '',
       checkOut: '',
+      today: new Date().toISOString().split('T')[0] // 오늘 날짜를 'YYYY-MM-DD' 형식으로 설정
     };
   },
   computed: {
@@ -61,6 +58,9 @@ export default {
         });
   },
   methods: {
+    getImageUrl(filename) {
+      return `/${filename}`;
+    },
     formatPrice(price) {
       if (price === undefined || price === null) {
         return '가격 정보 없음';
@@ -68,13 +68,6 @@ export default {
       return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     reserveRoom() {
-      // 사용자가 로그인했는지 확인
-      if (!this.isLoggedIn) {
-        alert('로그인이 필요합니다.');
-        this.$router.push('/login');
-        return;
-      }
-
       const reservationData = {
         roomId: this.room.id,
         userId: this.userId,
@@ -99,3 +92,32 @@ export default {
   }
 }
 </script>
+<style>
+/* 고객중심지향적으로 디자인을 개선하기 위한 스타일 추가 */
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-text {
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.btn-lg {
+  font-size: 1.25rem;
+  padding: 0.75rem 1.25rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+</style>

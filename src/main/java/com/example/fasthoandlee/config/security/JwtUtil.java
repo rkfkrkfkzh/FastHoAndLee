@@ -32,7 +32,6 @@ public class JwtUtil {
                 .compact();
     }
 
-
     // 2. JWT 토큰 유효성 검사 메서드
     public Boolean validateToken(String token, String username) {
         final String usernameInToken = getUsernameFromToken(token);
@@ -64,5 +63,15 @@ public class JwtUtil {
         // 토큰 파싱 시 시크릿 키 설정
         Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return claimsJws.getBody();
+    }
+
+    // 7. JWT 토큰에서 사용자 ID 추출 메서드
+    public Long extractUserId(String token) {
+        // Base64로 인코딩된 시크릿 키 사용
+        byte[] secretBytes = Base64.getEncoder().encode(secretKey.getBytes());
+        Key key = Keys.hmacShaKeyFor(secretBytes);
+        // 토큰 파싱 시 시크릿 키 설정
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getSubject());
     }
 }
