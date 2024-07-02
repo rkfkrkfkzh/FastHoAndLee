@@ -18,7 +18,7 @@ public class Room {
     private String name;
     private String description;
     private Double price;
-    private String imageUrl = "/images/room.png"; // 기본 이미지 경로
+    private String imageUrl;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private List<Reservation> reservation = new ArrayList<>();

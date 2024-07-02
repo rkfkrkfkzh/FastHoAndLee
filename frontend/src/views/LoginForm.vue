@@ -12,7 +12,7 @@
         <input type="password" id="userPwd" v-model="userPwd" required class="form-control">
       </div>
       <button type="submit" class="btn btn-primary">로그인</button>
-      <p v-if="loginError" class="error">{{ loginErrorMessage }}</p>
+      <p v-if="loginError" class="error" v-html="formattedErrorMessage"></p>
     </form>
     <!-- 회원가입 링크 -->
     <div class="register-link">
@@ -36,6 +36,11 @@ export default {
       loginErrorMessage: '',
     }
   },
+  computed: {
+    formattedErrorMessage() {
+      return this.loginErrorMessage.replace(/\n/g, '<br>');
+    }
+  },
   methods: {
     ...mapActions(['login']), // Vuex 액션을 매핑, logout 제거
     attemptLogin() {
@@ -51,8 +56,24 @@ export default {
           .catch(error => {
             console.error('로그인 실패:', error);
             this.loginError = true;
-            // 수정된 서버 응답 구조에 따라 에러 메시지 추출 방식을 변경
-            this.loginErrorMessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : '서버 오류가 발생했습니다. 다시 시도해주세요.';
+
+            if (error.response) {
+              // 서버가 응답을 반환한 경우
+              if (error.response.status === 401) {
+                // 인증 실패 (예: 아이디 또는 비밀번호가 틀린 경우)
+                this.loginErrorMessage = error.response.data.message.replace('\\n', '\n');
+              } else {
+                // 다른 서버 오류
+                this.loginErrorMessage = '서버 오류가 발생했습니다. 다시 시도해주세요.';
+              }
+            } else if (error.request) {
+              // 요청이 만들어졌으나 응답을 받지 못한 경우
+              this.loginErrorMessage = '서버와 통신할 수 없습니다. 인터넷 연결을 확인해주세요.';
+            } else {
+              // 그 외의 에러
+              this.loginErrorMessage = '알 수 없는 오류가 발생했습니다. 다시 시도해주세요.';
+            }
+            console.log('로그인 에러 메시지:', this.loginErrorMessage);
           });
     },
   }

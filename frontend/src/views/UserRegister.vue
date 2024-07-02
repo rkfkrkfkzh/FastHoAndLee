@@ -29,10 +29,6 @@
         <label for="email">이메일:</label>
         <input type="email" id="email" v-model="email" required class="form-control">
       </div>
-      <div class="form-group">
-        <label for="phoneNumber">연락처:</label>
-        <input type="text" id="phoneNumber" v-model="phoneNumber" required class="form-control">
-      </div>
       <div class="form-group row">
         <div class="col-sm-8">
           <input type="text" v-model="postcode" placeholder="우편번호" class="form-control">
@@ -49,18 +45,6 @@
       </div>
       <div class="form-group">
         <input type="text" id="extraAddress" v-model="extraAddress" placeholder="참고항목" class="form-control mb-2">
-      </div>
-      <div class="form-group">
-        <label for="birthDate">생일:</label>
-        <input type="date" id="birthDate" v-model="birthDate" required class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="gender">성별:</label>
-        <select id="gender" v-model="gender" required class="form-control">
-          <option disabled value="">선택해주세요</option>
-          <option value="male">남성</option>
-          <option value="female">여성</option>
-        </select>
       </div>
       <button type="submit" class="btn btn-primary">가입하기</button>
     </form>
@@ -82,14 +66,10 @@ export default {
       passwordMismatch: false, // 비밀번호 불일치를 확인하기 위한 데이터 속성 추가
       passwordMatch: false, // 비밀번호 일치를 확인하기 위한 데이터 속성 추가
       email: '',
-      phoneNumber: '',
       postcode: "",
       address: "",
       detailAddress: "",
       extraAddress: "",
-      birthDate: null,
-      gender: '',
-      ageLimit: 19, // 나이 제한 설정
       addressOptions: [], // 주소 검색 결과를 저장할 배열
     }
   },
@@ -123,16 +103,6 @@ export default {
         this.passwordMatch = false;
         this.passwordMismatch = true;
       }
-    },
-    checkAge() {
-      const birthDate = new Date(this.birthDate);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age >= this.ageLimit;
     },
     execDaumPostcode() {
       new window.daum.Postcode({
@@ -175,11 +145,8 @@ export default {
       }).open();
     },
     register() {
-      // 비밀번호 불일치, 등록 오류 검사, 나이 제한 검사를 모두 통과해야 합니다.
-      if (this.passwordMismatch || this.registerError || !this.checkAge()) {
-        if (!this.checkAge()) {
-          alert('19세 미만은 가입할 수 없습니다.');
-        }
+      // 비밀번호 불일치, 등록 오류 검사를 모두 통과해야 합니다.
+      if (this.passwordMismatch || this.registerError) {
         return; // 여기서 함수 종료
       }
 
@@ -189,13 +156,10 @@ export default {
         userPwd: this.userPwd,
         userName: this.userName,
         email: this.email,
-        phoneNumber: this.phoneNumber,
         detailAddress: this.detailAddress, // 상세 주소 추가
         address: this.address,
         extraAddress: this.extraAddress,
         postcode: this.postcode,
-        birthDate: this.birthDate,
-        gender: this.gender
       })
           .then(() => {
             // 회원가입 성공 시 로그인 페이지로 이동합니다.

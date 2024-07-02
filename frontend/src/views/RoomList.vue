@@ -31,6 +31,7 @@ export default {
     // axios 요청에 인증 헤더 추가
     axios.get('/rooms', )
         .then(response => {
+          console.log(response.data); // 응답 데이터를 콘솔에 출력하여 확인
           this.rooms = response.data;
         })
         .catch(error => {

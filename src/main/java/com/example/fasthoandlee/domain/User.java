@@ -22,13 +22,10 @@ public class User {
     private String userPwd; // 비밀번호
     private String userName; // 이름
     private String email; // 이메일
-    private String phoneNumber; // 연락처
     private String address; // 기본 주소
     private String detailAddress; // 상세 주소
     private String extraAddress; // 참고 항목
     private String postcode; // 우편번호
-    private LocalDate birthDate; // 생일
-    private String gender; // 성별
     private LocalDateTime signUpDate = LocalDateTime.now(); // 회원 가입일, 기본값으로 현재 시간 설정
     private String role = "USER"; // 권한, 기본값으로 "USER" 설정
 

@@ -20,7 +20,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody User user) {
         return authService.loginAndGenerateToken(user.getUserId(), user.getUserPwd())
                 .map(token -> ResponseEntity.ok().body(Map.of("token", token))) // 성공 시, 토큰을 포함한 JSON 객체 반환
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인 실패!!! 다시 입력해주세요")));
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "아이디 또는 비밀번호를 잘못 입력했습니다.\\n 입력하신 내용을 다시 확인해주세요.")));
     }
 
 
