@@ -1,6 +1,7 @@
 package com.example.fasthoandlee.controller;
 
 import com.example.fasthoandlee.config.security.JwtUtil;
+import com.example.fasthoandlee.controller.requestDTO.ReservationRequest;
 import com.example.fasthoandlee.domain.Reservation;
 import com.example.fasthoandlee.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,12 @@ public class ReservationController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createReservation(@RequestBody Reservation reservation) {
-        try {
-            Reservation createdReservation = reservationService.reserveRoom(reservation);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
-        }
+    public Reservation createReservation(@RequestBody ReservationRequest request) {
+        return reservationService.reserveRoom(
+                request.getRoomId(),
+                request.getUserId(),
+                request.getCheckIn(),
+                request.getCheckOut());
     }
 
     @GetMapping("/list")

@@ -1,5 +1,6 @@
 package com.example.fasthoandlee.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class Reservation {
     private Room room;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id") // 추가
     private User user;
 

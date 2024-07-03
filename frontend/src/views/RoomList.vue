@@ -35,7 +35,7 @@ export default {
           this.rooms = response.data;
         })
         .catch(error => {
-          console.error('Error fetching rooms:', error);
+          console.error('객실리스트를 가져오는 중에 오류가 발생했습니다 :', error);
         });
   },
   methods: {

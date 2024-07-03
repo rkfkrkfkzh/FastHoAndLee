@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/users/*", "/api/home").permitAll()
-                .antMatchers("/api/rooms/**", "/api/reservations/**", "/reservations/list").authenticated()
+                .antMatchers("/api/rooms/**", "/api/reservations/**").authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())

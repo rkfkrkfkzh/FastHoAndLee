@@ -1,6 +1,8 @@
 package com.example.fasthoandlee.service;
 
 import com.example.fasthoandlee.domain.Reservation;
+import com.example.fasthoandlee.domain.Room;
+import com.example.fasthoandlee.domain.User;
 import com.example.fasthoandlee.repository.ReservationRepository;
 import com.example.fasthoandlee.repository.RoomRepository;
 import com.example.fasthoandlee.repository.UserRepository;
@@ -20,13 +22,19 @@ public class ReservationService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
 
-    // 예약 등록
     @Transactional
-    public Reservation reserveRoom(Reservation reservation) {
-        reservation.setRoom(roomRepository.findById(reservation.getRoom().getId()).orElseThrow(() -> new IllegalArgumentException("Invalid room Id")));
-        reservation.setUser(userRepository.findById(reservation.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("Invalid user Id")));
-        reservation.setCheckIn(reservation.getCheckIn());
-        reservation.setCheckOut(reservation.getCheckOut());
+    public Reservation reserveRoom(Long roomId, Long userId, LocalDate checkIn, LocalDate checkOut) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalStateException("유효하지 않은 객실 ID입니다."));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("유효하지 않은 고객 ID입니다."));
+
+        Reservation reservation = new Reservation();
+        reservation.setRoom(room);
+        reservation.setUser(user);
+        reservation.setCheckIn(checkIn);
+        reservation.setCheckOut(checkOut);
+
         return reservationRepository.save(reservation);
     }
 

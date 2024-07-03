@@ -1,14 +1,13 @@
 package com.example.fasthoandlee.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -29,6 +28,7 @@ public class User {
     private LocalDateTime signUpDate = LocalDateTime.now(); // 회원 가입일, 기본값으로 현재 시간 설정
     private String role = "USER"; // 권한, 기본값으로 "USER" 설정
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Reservation> reservation = new ArrayList<>();
 

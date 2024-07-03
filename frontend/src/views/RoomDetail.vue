@@ -74,23 +74,20 @@ export default {
         checkIn: this.checkIn,
         checkOut: this.checkOut
       };
-      axios.post('/reservations/create', reservationData) // 변경된 부분
+
+      axios.post('/reservations/create', reservationData)
           .then(response => {
-            console.log('Reservation successful:', response);
-            alert('예약이 완료되었습니다.');
-            this.$router.push('/'); // 임시 리다이렉트
+            console.log("예약 성공 : ", response.data);
+            alert("예약이 성공적으로 완료되었습니다.");
           })
           .catch(error => {
-            if (error.response && error.response.data && error.response.data.error) {
-              alert(`예약 실패: ${error.response.data.error}`);
-            } else {
-              console.error('예약 생성 오류:', error);
-              alert('예약 중 알 수 없는 오류가 발생했습니다.');
-            }
+            console.error("에러 : ", error);
+            alert("예약 중 오류가 발생했습니다. 다시 시도해 주세요.");
           });
     }
   }
 }
+
 </script>
 <style>
 /* 고객중심지향적으로 디자인을 개선하기 위한 스타일 추가 */
