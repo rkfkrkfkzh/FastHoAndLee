@@ -24,15 +24,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
-        logger.info("Authorization Header: {}", token);
+        logger.info("승인 헤더 : {}", token);
 
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
-            logger.info("Extracted Token: {}", token);
+            logger.info("추출된 토큰 : {}", token);
 
             try {
                 String username = jwtUtil.getUsernameFromToken(token);
-                logger.info("Username from token: {}", username);
+                logger.info("토큰의 사용자 이름 : {}", username);
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     if (jwtUtil.validateToken(token, username)) {
@@ -42,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (Exception e) {
-                logger.error("Token processing error: {}", e.getMessage());
+                logger.error("토큰 처리 오류 : {}", e.getMessage());
             }
         }
         filterChain.doFilter(request, response);
