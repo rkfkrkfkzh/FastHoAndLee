@@ -90,6 +90,7 @@ export default {
           .then(response => {
             console.log("예약 성공 : ", response.data);
             alert("예약이 성공적으로 완료되었습니다.");
+            this.$router.push('/'); // 예약 성공 후 홈페이지로 리다이렉트
           })
           .catch(error => {
             console.error("에러 : ", error);
