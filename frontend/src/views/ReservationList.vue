@@ -5,16 +5,17 @@
       <p>예약한 객실이 없습니다.</p>
     </div>
     <div v-else>
-      <ul>
-        <li v-for="reservation in reservations" :key="reservation.id" class="reservation-item">
+      <div class="reservation-grid">
+        <div v-for="reservation in reservations" :key="reservation.id" class="reservation-item">
           <img :src="getImageUrl(reservation.room.imageUrl)" alt="Room Image" class="room-image"/>
           <div class="reservation-details">
             <h2>{{ reservation.room.name }}</h2>
             <p>Check-in: {{ reservation.checkIn }}</p>
             <p>Check-out: {{ reservation.checkOut }}</p>
+            <button @click="cancelReservation(reservation.id)">예약 취소</button>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +48,18 @@ export default {
   methods: {
     getImageUrl(filename) {
       return `/${filename}`;
+    },
+    cancelReservation(id) {
+      const token = localStorage.getItem('jwtToken');
+      axios.delete(`/reservations/cancel/${id}`, {headers: {'Authorization': `Bearer ${token}`}})
+          .then(response => {
+            alert(response.data);
+            this.reservations = this.reservations.filter(reservation => reservation.id !== id);
+          })
+          .catch(error => {
+            console.error('Error cancelling reservation:', error);
+            alert('예약 취소 중 오류가 발생했습니다.');
+          });
     }
   }
 }
@@ -68,15 +81,15 @@ p {
   color: #666;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+.reservation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 최소 280px, 최대 화면 크기에 따라 열 수 조정 */
+  gap: 20px; /* 카드 간격 */
 }
 
 .reservation-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -84,8 +97,8 @@ ul {
 }
 
 .room-image {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 8px;
   object-fit: cover;
   margin-right: 20px;
@@ -94,16 +107,31 @@ ul {
 .reservation-details {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .reservation-details h2 {
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: #333;
 }
 
 .reservation-details p {
   margin: 5px 0;
   color: #666;
+}
+
+button {
+  align-self: flex-end;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff6666;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff3333;
 }
 </style>

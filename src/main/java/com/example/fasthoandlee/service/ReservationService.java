@@ -42,4 +42,17 @@ public class ReservationService {
     public List<Reservation> findReservationsByUserId(Long userId) {
         return reservationRepository.findByUserId(userId);
     }
+
+    // 예약 취소
+    @Transactional
+    public void cancelReservation(Long reservationId, Long userId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalStateException("유효하지 않은 예약 ID입니다."));
+
+        if (!reservation.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("해당 예약을 취소할 권한이 없습니다.");
+        }
+
+        reservationRepository.delete(reservation);
+    }
 }
