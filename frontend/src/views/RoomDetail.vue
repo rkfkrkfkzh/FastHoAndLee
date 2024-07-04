@@ -35,11 +35,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['isLoggedIn']),
-    userId() {
-      // 여기서는 예시로 1을 반환합니다. 실제로는 로그인 시 사용자 정보에서 ID를 가져와야 합니다.
-      return 1;
-    },
+    ...mapState(['isLoggedIn', 'userId']),
   },
   mounted() {
     const roomId = this.$route.params.id;
@@ -47,8 +43,10 @@ export default {
         .then(response => {
           if (response.data) {
             console.log(response.data); // 응답 데이터를 콘솔에 출력하여 확인
+
             this.room = response.data;
             console.log('Room data:', this.room);
+
           } else {
             console.error('이미지 URL이 없습니다.');
           }
@@ -68,12 +66,25 @@ export default {
       return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     reserveRoom() {
+      if (!this.isLoggedIn) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+      // userId가 올바르게 설정되어 있는지 확인
+      if (!this.userId) {
+        console.error("userId가 정의되지 않았습니다.");
+        alert('로그인이 필요합니다.');
+        return;
+      }
+
       const reservationData = {
         roomId: this.room.id,
         userId: this.userId,
         checkIn: this.checkIn,
         checkOut: this.checkOut
       };
+
+      console.log("Reservation Data: ", reservationData); // 디버깅용 로그
 
       axios.post('/reservations/create', reservationData)
           .then(response => {
@@ -87,7 +98,6 @@ export default {
     }
   }
 }
-
 </script>
 <style>
 /* 고객중심지향적으로 디자인을 개선하기 위한 스타일 추가 */

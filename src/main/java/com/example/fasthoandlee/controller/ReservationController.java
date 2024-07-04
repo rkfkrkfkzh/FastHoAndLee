@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -21,12 +20,17 @@ public class ReservationController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/create")
-    public Reservation createReservation(@RequestBody ReservationRequest request) {
-        return reservationService.reserveRoom(
-                request.getRoomId(),
-                request.getUserId(),
-                request.getCheckIn(),
-                request.getCheckOut());
+    public ResponseEntity<?> createReservation(@RequestBody ReservationRequest request) {
+        try {
+            Reservation reservation = reservationService.reserveRoom(
+                    request.getRoomId(),
+                    request.getUserId(),
+                    request.getCheckIn(),
+                    request.getCheckOut());
+            return ResponseEntity.ok(reservation);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예약 생성 중 오류가 발생했습니다.");
+        }
     }
 
     @GetMapping("/list")
@@ -38,7 +42,7 @@ public class ReservationController {
             if (reservations.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reservations);
             }
-            return new ResponseEntity<>(reservations, HttpStatus.OK);
+            return ResponseEntity.ok(reservations);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

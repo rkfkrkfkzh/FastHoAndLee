@@ -18,11 +18,14 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
 
+    private Key getSigningKey() {
+        byte[] secretBytes = Base64.getDecoder().decode(secretKey);
+        return Keys.hmacShaKeyFor(secretBytes);
+    }
+
     // 1. JWT 생성 메서드
     public String generateToken(User user) {
-        // Base64로 인코딩된 시크릿 키 사용
-        byte[] secretBytes = Base64.getEncoder().encode(secretKey.getBytes());
-        Key key = Keys.hmacShaKeyFor(secretBytes);
+        Key key = getSigningKey();
 
         return Jwts.builder()
                 .setSubject(user.getUserId())
@@ -64,10 +67,7 @@ public class JwtUtil {
 
     // 7. JWT 토큰에서 모든 클레임 추출 메서드
     private Claims getAllClaimsFromToken(String token) {
-        // Base64로 인코딩된 시크릿 키 사용
-        byte[] secretBytes = Base64.getEncoder().encode(secretKey.getBytes());
-        Key key = Keys.hmacShaKeyFor(secretBytes);
-        // 토큰 파싱 시 시크릿 키 설정
+        Key key = getSigningKey();
         Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return claimsJws.getBody();
     }

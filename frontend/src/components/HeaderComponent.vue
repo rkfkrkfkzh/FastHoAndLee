@@ -35,8 +35,6 @@
         </div>
       </div>
     </nav>
-    <!-- 로그인 컴포넌트 조건부 렌더링 -->
-    <Login v-if="!isLoggedIn && $route.path === '/users/login'" @login-success="handleLoginSuccess" />
   </header>
 </template>
 
