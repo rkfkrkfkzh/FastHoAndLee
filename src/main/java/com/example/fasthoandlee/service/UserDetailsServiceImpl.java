@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUserId(username)
                 .map(user -> {
-                    String token = jwtUtil.generateToken(user.getUserId());
+                    String token = jwtUtil.generateToken(user);
                     return new org.springframework.security.core.userdetails.User(
                             user.getUserId(),
                             user.getUserPwd(),

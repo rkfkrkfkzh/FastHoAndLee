@@ -1,5 +1,6 @@
 package com.example.fasthoandlee.controller;
 
+import com.example.fasthoandlee.controller.requestDTO.LoginRequest;
 import com.example.fasthoandlee.domain.User;
 import com.example.fasthoandlee.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,11 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        return authService.loginAndGenerateToken(user.getUserId(), user.getUserPwd())
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        return authService.loginAndGenerateToken(loginRequest.getUserId(), loginRequest.getUserPwd())
                 .map(token -> ResponseEntity.ok().body(Map.of("token", token))) // 성공 시, 토큰을 포함한 JSON 객체 반환
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "아이디 또는 비밀번호를 잘못 입력했습니다.\\n 입력하신 내용을 다시 확인해주세요.")));
     }
-
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {

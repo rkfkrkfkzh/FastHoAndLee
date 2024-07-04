@@ -22,6 +22,6 @@ public class AuthService {
     public Optional<String> loginAndGenerateToken(String userId, String userPwd) {
         return userRepository.findByUserId(userId)
                 .filter(user -> passwordEncoder.matches(userPwd, user.getUserPwd()))
-                .map(user -> jwtUtil.generateToken(userId));
+                .map(jwtUtil::generateToken);
     }
 }
