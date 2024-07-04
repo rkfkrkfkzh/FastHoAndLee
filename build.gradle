@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.5.4' // 버전 수정
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    /**
+     * vue-project를 build하기 위한 설정
+     * - node gradle plugin 추가
+     */
+    id "com.github.node-gradle.node" version "3.0.1"
+//    id 'war'  // WAR 플러그인 추가
+    //Aplication ServletInitializer 추가
+}
+
+group = 'shop'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+// java 17 버전은 gradle 7.3 호환 8.5 상에서는... 업그레이드시 사용못하는 의존성이 많아 7.3 적당
+    // gradle는 배포전 wrapper.properties 설정해놓음
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+// Spring Boot WAR 배포 시, 내장 서버(Tomcat 등)는 제공(Provided) 범위로 설정
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+// vue + springboot 통합 배포시 json, RestController 형식인데 통합 배포시 html,css등 viewResolver처리를 위해 추가?
+//    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+//    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0' //java 17버전 호환
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
+
+    compileOnly 'org.projectlombok:lombok'
+//    runtimeOnly 'com.h2database:h2'
+//    runtimeOnly 'mysql:mysql-connector-java'   // 기존 MySQL connector 제거
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.2' // MariaDB connector 추가
+
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.14.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.0')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.7.0')
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2' // If you're using Jackson for JSON processing
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// build.gradle 설정 추가
+//
+//node {
+//    workDir = file("./frontend")
+//    npmWorkDir = file("./frontend")
+//    nodeModulesDir = file("./frontend")
+//}
+//
+//task setUp (type: NpmTask) {
+//    description = "Install Node.js packages"
+//    args = ['install']
+//    inputs.files file('package.json')
+//    outputs.files file('node_modules')
+//}
+//
+//task buildFrontEnd (type: NpmTask, dependsOn: setUp) {
+//    description = "Build vue.js"
+//    args = ['run', 'build']
+//}
+//
+//processResources.dependsOn 'buildFrontEnd'
