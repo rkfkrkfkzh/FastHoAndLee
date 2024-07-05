@@ -1,0 +1,33 @@
+version: '3'
+services:
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: ./.env
+    environment:
+      - JWT_TOKEN=${JWT_TOKEN}
+      - JWT_EXPIRE_TIME=${JWT_EXPIRE_TIME}
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.5
+    environment:
+      - MYSQL_DATABASE=maria
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mariadb-data:
