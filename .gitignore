@@ -37,6 +37,7 @@ out/
 .vscode/
 
 ### 아래의 디렉터리는 Git Commit 예외 처리 ###
+.env*
 /frontend/node_modules
 /src/main/resources/application.yml
 /build.gradle
