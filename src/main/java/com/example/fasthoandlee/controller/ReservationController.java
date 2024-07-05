@@ -47,4 +47,18 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @DeleteMapping("/cancel/{id}")
+    public ResponseEntity<?> cancelReservation(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        try {
+            String jwt = token.substring(7); // "Bearer " 부분 제거
+            Long userId = jwtUtil.extractUserId(jwt);
+            reservationService.cancelReservation(id, userId);
+            return ResponseEntity.ok("예약이 취소되었습니다.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("예약 취소 중 오류가 발생했습니다.");
+        }
+    }
 }
