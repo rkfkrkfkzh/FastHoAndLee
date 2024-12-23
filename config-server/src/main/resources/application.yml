@@ -1,0 +1,19 @@
+server:
+  port: 8888  # Config Server 포트 설정
+
+#spring:
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/rkfkrkfkzh/config-repo  # Git 저장소에서 설정 파일을 로드
+#          cloneOnStart: true  # 서버 시작 시 리포지토리를 클론
+
+## Git을 사용하는 대신 파일 시스템을 사용
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: file:///path/to/config-files  # 파일 시스템에서 설정을 읽어오도록 설정
+

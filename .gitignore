@@ -41,10 +41,17 @@ out/
 .env*
 docker-compose.yml
 /frontend/node_modules
-/src/main/resources/application.yml
 /build.gradle
 /Dockerfile
 /mariadb-configmap.yaml
 /mariadb-deployment.yaml
 /spring-deployment.yaml
 /frontend/vue.config.js
+### config-client
+/config-client/build.gradle
+/config-client/src/main/resources/application.yml
+/config-client/src/main/resources/bootstrap.yml
+### config-server
+/config-server/build.gradle
+/config-server/src/main/resources/application.yml
+

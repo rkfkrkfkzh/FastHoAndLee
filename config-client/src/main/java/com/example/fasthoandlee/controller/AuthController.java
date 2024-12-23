@@ -1,7 +1,6 @@
 package com.example.fasthoandlee.controller;
 
 import com.example.fasthoandlee.controller.requestDTO.LoginRequest;
-import com.example.fasthoandlee.domain.User;
 import com.example.fasthoandlee.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

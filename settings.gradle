@@ -1,1 +1,3 @@
 rootProject.name = 'FastHoAndLee'
+
+include 'config-server', 'config-client', 'frontend'
