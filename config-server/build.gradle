@@ -23,7 +23,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'  // Spring Cloud Config 의존성
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'  // bootstrap.yml을 사용하여 설정을 외부에서 읽도록 함
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // Spring Cloud Config Server 의존성
     implementation 'org.springframework.cloud:spring-cloud-config-server'

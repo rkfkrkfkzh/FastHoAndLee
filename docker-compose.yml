@@ -9,7 +9,7 @@ services:
     environment:
       - JWT_TOKEN=${JWT_TOKEN}
       - JWT_EXPIRE_TIME=${JWT_EXPIRE_TIME}
-      - DB_URL=${DB_URL}
+      - DB_URL=${DB_DOCKER_URL}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
