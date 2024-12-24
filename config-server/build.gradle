@@ -1,0 +1,31 @@
+plugins {
+    id 'java'  // Java 플러그인 추가
+    id 'org.springframework.boot' // 버전은 루트에서 관리되므로 명시하지 않음
+    id 'io.spring.dependency-management' // 버전은 루트에서 관리되므로 명시하지 않음
+}
+
+repositories {
+    mavenCentral()    // Spring Cloud 의존성을 위해 필요한 경우 추가 저장소도 설정
+}
+
+bootJar {
+    mainClass = 'com.example.configserver.ConfigServerApplication'  // mainClassName 사용
+}
+
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.3" // Spring Cloud BOM 설정
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'  // Spring Cloud Config 의존성
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'  // bootstrap.yml을 사용하여 설정을 외부에서 읽도록 함
+
+    // Spring Cloud Config Server 의존성
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

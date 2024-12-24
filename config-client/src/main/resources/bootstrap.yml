@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: FastHoAndLee  # 설정파일의 이름을 서버에서 찾을 때 사용됩니다.
+  cloud:
+    config:
+      uri: http://localhost:8888  # Config Server의 주소 (Config Server의 포트에 맞게 수정)
